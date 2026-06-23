@@ -112,3 +112,9 @@ jobs:
         export ASEPRITE=$PWD/build/bin/aseprite
         cd tests
         $XVFB bash run-tests.sh
+    - name: Upload artifacts (aseprite build)
+      if: matrix.ui == 'gui' && matrix.scripting == 'lua' && matrix.build_type == 'RelWithDebInfo'
+      uses: actions/upload-artifact@v4
+      with:
+        name: aseprite-${{ matrix.os }}
+        path: build/bin
