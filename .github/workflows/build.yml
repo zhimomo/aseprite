@@ -109,3 +109,15 @@ jobs:
         export ASEPRITE=$PWD/build/bin/aseprite
         cd tests
         $XVFB bash run-tests.sh
+    - name: Copy runtime dependencies (Windows)
+      if: runner.os == 'Windows'
+      shell: powershell
+      run: |
+        $bin = "build/bin"
+
+        # 找 OpenSSL DLL（最关键）
+        Get-ChildItem -Recurse C:\OpenSSL* -Filter "libcrypto*.dll" -ErrorAction SilentlyContinue | `
+          Copy-Item -Destination $bin -Force
+
+        Get-ChildItem -Recurse C:\OpenSSL* -Filter "libssl*.dll" -ErrorAction SilentlyContinue | `
+          Copy-Item -Destination $bin -Force
